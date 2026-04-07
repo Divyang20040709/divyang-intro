@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: portfolio-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        generateValue: false
+        value: 10000
+      - key: CLIENT_URL
+        value: https://my-portfolio-nine-eta-14.vercel.app
+      # Set these in Render dashboard — do NOT hardcode secrets here
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: CONTACT_EMAIL
+        sync: false
+    healthCheckPath: /api/health
+    autoDeploy: true

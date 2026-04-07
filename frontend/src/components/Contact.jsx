@@ -28,30 +28,38 @@ export default function Contact() {
     setStatus("sending");
     setErrMsg("");
 
-    // Prepare Web3Forms form data
-    const formData = new FormData();
-    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // USER: Replace with your actual key from web3forms.com
-    formData.append("name", form.name);
-    formData.append("email", form.email);
-    formData.append("message", form.message);
-    formData.append("subject", "New Portfolio Inquiry from " + form.name);
-    formData.append("from_name", "Portfolio Contact Form");
+    // Use relative path locally (Vite proxy handles it) or full URL in production
+    const base = import.meta.env.VITE_API_URL || "";
+    console.log("[Contact] Submitting to:", `${base}/api/contact`);
 
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      const res = await fetch(`${base}/api/contact`, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        }),
       });
 
       const data = await res.json();
-      
-      if (data.success) {
-        setStatus("success");
-        setForm(INIT);
-      } else {
-        throw new Error(data.message || "Submission failed. Please try again.");
+      console.log("[Contact] Response:", data);
+
+      if (!res.ok) {
+        // Handle validation errors from express-validator
+        const msg = data.errors
+          ? data.errors.map((e) => e.msg).join(", ")
+          : data.error || "Submission failed. Please try again.";
+        throw new Error(msg);
       }
+
+      setStatus("success");
+      setForm(INIT);
     } catch (err) {
+      console.error("[Contact] Error:", err.message);
       setErrMsg(err.message);
       setStatus("error");
     }

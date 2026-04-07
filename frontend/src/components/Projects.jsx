@@ -9,13 +9,23 @@ export default function Projects() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("/api/projects")
+    // Use relative path locally (Vite proxy handles it) or full URL in production
+    const base = import.meta.env.VITE_API_URL || "";
+    console.log("[Projects] Fetching from:", `${base}/api/projects`);
+
+    fetch(`${base}/api/projects`)
       .then((r) => {
-        if (!r.ok) throw new Error("Failed to load");
+        if (!r.ok) throw new Error(`Server responded with ${r.status}`);
         return r.json();
       })
-      .then((data) => setProjects(data.projects))
-      .catch(() => setError("Could not load projects."))
+      .then((data) => {
+        console.log("[Projects] Loaded:", data.projects?.length, "projects");
+        setProjects(data.projects);
+      })
+      .catch((err) => {
+        console.error("[Projects] Fetch error:", err.message);
+        setError("Could not load projects.");
+      })
       .finally(() => setLoading(false));
   }, []);
 

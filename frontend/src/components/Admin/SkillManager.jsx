@@ -3,7 +3,7 @@ import "./Admin.css";
 
 const categories = ["Frontend", "Backend", "Databases", "DevOps & Cloud", "Tools", "AI / ML"];
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "https://divyang-intro.onrender.com";
 
 const SkillManager = () => {
   const [skills, setSkills] = useState([]);

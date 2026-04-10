@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "";
+const API_URL = import.meta.env.VITE_API_URL;
 
 /**
  * Generic request helper to handle API calls and errors
@@ -38,4 +38,9 @@ export const sendContact = (data) => {
 export const getProjects = async () => {
   const data = await request("/api/projects");
   return data.projects || [];
+};
+
+export const getSkills = async () => {
+  const data = await request("/api/skills");
+  return data.skills || [];
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { getSkills } from "../api";
 import "./Skills.css";
 
 export default function Skills() {
@@ -9,9 +10,8 @@ export default function Skills() {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const res = await fetch("/api/skills");
-        const data = await res.json();
-        setSkillData(data.skills || []);
+        const data = await getSkills();
+        setSkillData(data);
       } catch (err) {
         console.error("Failed to fetch skills:", err);
       } finally {

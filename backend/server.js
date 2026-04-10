@@ -4,7 +4,6 @@ const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
-const { corsOptions, rawClientUrl } = require("./config/corsConfig");
 const connectDB = require("./config/db");
 
 const contactRoutes = require("./routes/contact");
@@ -12,65 +11,58 @@ const projectRoutes = require("./routes/projects");
 const skillRoutes = require("./routes/skills");
 const authRoutes = require("./routes/auth");
 
-// Connect to Database
 connectDB();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const NODE_ENV = process.env.NODE_ENV?.trim() || "development";
 
-// ─── Middleware ───────────────────────────────────────────────
-app.use(helmet());
-app.use(morgan(NODE_ENV === "production" ? "combined" : "dev"));
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Pre-flight for all routes
+// 1. GLOBAL HEADER MIDDLEWARE (TOP PRIORITY)
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  // Handle preflight requests immediately
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
+// 2. MIDDLEWARE ORDER (VERY IMPORTANT)
+app.use(cors());
 app.use(express.json());
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}));
 
+app.use(morgan("dev"));
+
+// ✅ 5. RATE LIMIT (AFTER CORS)
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 min
+  windowMs: 15 * 60 * 1000,
   max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
 });
 app.use(limiter);
 
-// ─── Root Route ───────────────────────────────────────────────
+// ─── ROUTES ─────────────────────────
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-// ─── API Routes ───────────────────────────────────────────────
 app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/skills", skillRoutes);
 
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", environment: NODE_ENV, timestamp: new Date().toISOString() });
-});
-
-// ─── 404 Handler ─────────────────────────────────────────────
-app.use((req, res) => {
-  res.status(404).json({ error: "Route not found", path: req.originalUrl });
-});
-
-// ─── Global Error Handler ─────────────────────────────────────
-// eslint-disable-next-line no-unused-vars
+// ─── ERROR HANDLER ──────────────────
 app.use((err, req, res, next) => {
-  console.error(`[${new Date().toISOString()}] ERROR:`, err.message);
-  if (NODE_ENV !== "production") console.error(err.stack);
-
-  // CORS errors return 403
-  if (err.message?.startsWith("CORS:")) {
-    return res.status(403).json({ error: err.message });
-  }
-
-  res.status(err.status || 500).json({
-    error: NODE_ENV === "production" ? "Internal server error" : err.message,
-  });
+  console.error(err);
+  res.status(500).json({ error: err.message });
 });
+
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT} [${NODE_ENV}]`);
-  console.log(`   Allowed origin: ${rawClientUrl}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });

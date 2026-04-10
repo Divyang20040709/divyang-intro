@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Admin.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const ProjectManager = () => {
   const [projects, setProjects] = useState([]);
   const [formData, setFormData] = useState({
@@ -22,7 +24,7 @@ const ProjectManager = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch("/api/projects");
+      const res = await fetch(`${API_URL}/api/projects`);
       const data = await res.json();
       setProjects(data.projects || []);
     } catch (err) {
@@ -42,7 +44,7 @@ const ProjectManager = () => {
     };
 
     try {
-      const url = editingId ? `/api/projects/${editingId}` : "/api/projects";
+      const url = editingId ? `${API_URL}/api/projects/${editingId}` : `${API_URL}/api/projects`;
       const method = editingId ? "PUT" : "POST";
 
       const res = await fetch(url, {
@@ -81,7 +83,7 @@ const ProjectManager = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure?")) return;
     try {
-      const res = await fetch(`/api/projects/${id}`, {
+      const res = await fetch(`${API_URL}/api/projects/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

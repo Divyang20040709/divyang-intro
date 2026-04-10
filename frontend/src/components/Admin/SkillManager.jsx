@@ -3,6 +3,8 @@ import "./Admin.css";
 
 const categories = ["Frontend", "Backend", "Databases", "DevOps & Cloud", "Tools", "AI / ML"];
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const SkillManager = () => {
   const [skills, setSkills] = useState([]);
   const [formData, setFormData] = useState({
@@ -21,7 +23,7 @@ const SkillManager = () => {
 
   const fetchSkills = async () => {
     try {
-      const res = await fetch("/api/skills");
+      const res = await fetch(`${API_URL}/api/skills`);
       const data = await res.json();
       setSkills(data.skills || []);
     } catch (err) {
@@ -39,7 +41,7 @@ const SkillManager = () => {
     };
 
     try {
-      const res = await fetch("/api/skills", {
+      const res = await fetch(`${API_URL}/api/skills`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +64,7 @@ const SkillManager = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure?")) return;
     try {
-      const res = await fetch(`/api/skills/${id}`, {
+      const res = await fetch(`${API_URL}/api/skills/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

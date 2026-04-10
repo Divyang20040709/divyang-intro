@@ -1,61 +1,61 @@
 import React, { useEffect, useState } from "react";
-import { useReveal } from "../hooks/useReveal";
+import { motion } from "framer-motion";
+import { getProjects } from "../api";
 import "./Projects.css";
 
 export default function Projects() {
-  const h = useReveal();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Use relative path locally (Vite proxy handles it) or full URL in production
-    const base = import.meta.env.VITE_API_URL || "";
-    console.log("[Projects] Fetching from:", `${base}/api/projects`);
+    const fetchProjects = async () => {
+      try {
+        const data = await getProjects();
+        setProjects(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    fetch(`${base}/api/projects`)
-      .then((r) => {
-        if (!r.ok) throw new Error(`Server responded with ${r.status}`);
-        return r.json();
-      })
-      .then((data) => {
-        console.log("[Projects] Loaded:", data.projects?.length, "projects");
-        setProjects(data.projects);
-      })
-      .catch((err) => {
-        console.error("[Projects] Fetch error:", err.message);
-        setError("Could not load projects.");
-      })
-      .finally(() => setLoading(false));
+    fetchProjects();
   }, []);
 
+  const revealProps = {
+    initial: { opacity: 0, y: 30 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.1 },
+    transition: { duration: 0.7, ease: [0.25, 1, 0.5, 1] }
+  };
+
   return (
-    <section id="projects" className="section" style={{ background: "var(--bg2)" }}>
-      <div ref={h} className="section-header reveal">
+    <section id="projects" className="section">
+      <motion.div {...revealProps} className="section-header">
         <span className="section-num">03 /</span>
         <h2 className="section-title">Projects</h2>
         <div className="section-line" />
-      </div>
+      </motion.div>
 
       {loading && (
         <div className="projects-loading">
-          <span className="loading-dot" />
-          <span className="loading-dot" />
-          <span className="loading-dot" />
-          <span style={{ marginLeft: "1rem", color: "var(--text-dim)", fontSize: "0.8rem" }}>
-            Loading projects...
-          </span>
+          <div className="loader" />
+          <p>Fetching architectural designs...</p>
         </div>
       )}
 
       {error && (
-        <p style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>⚠ {error}</p>
+        <div className="projects-error">
+          <p>⚠ {error}</p>
+          <button className="btn-ghost" onClick={() => window.location.reload()}>Retry</button>
+        </div>
       )}
 
       {!loading && !error && (
-        <div className="projects-list">
+        <div className="projects-grid">
           {projects.map((p, i) => (
-            <ProjectCard key={p.id} project={p} delay={i * 80} />
+            <ProjectCard key={p.id || i} project={p} index={i} />
           ))}
         </div>
       )}
@@ -63,38 +63,51 @@ export default function Projects() {
   );
 }
 
-function ProjectCard({ project, delay }) {
-  const ref = useReveal();
-  return (
-    <div
-      ref={ref}
-      className="project-card reveal"
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      <div className="project-num">{project.num}</div>
+function ProjectCard({ project, index }) {
+  // Use generated placeholders if image missing
+  const imageSrc = project.image || (index % 2 === 0 ? "/project1.png" : "/project2.png");
 
-      <div className="project-info">
-        <h3 className="project-title">{project.title}</h3>
-        <p className="project-desc">{project.description}</p>
-        <div className="project-stack">
-          {project.stack.map((s) => (
-            <span key={s} className="stack-tag">{s}</span>
-          ))}
+  return (
+    <motion.div
+      className="project-card"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.8, delay: index * 0.15, ease: [0.25, 1, 0.5, 1] }}
+    >
+      <div className="project-image-wrapper">
+        <img src={imageSrc} alt={project.title} className="project-card-image" />
+        <div className="project-overlay">
+          <div className="project-links-overlay">
+            {/* The overlay now just serves as a visual hover state */}
+          </div>
         </div>
       </div>
 
-      <div className="project-actions">
-        {project.github && (
-          <a href={project.github} target="_blank" rel="noreferrer" className="project-link" title="GitHub">
-            ⌥
-          </a>
-        )}
-        {project.live && (
-          <a href={project.live} target="_blank" rel="noreferrer" className="project-link" title="Live">
-            ↗
-          </a>
-        )}
+      <div className="project-body">
+        <div className="project-num-tag">{String(index + 1).padStart(2, "0")}</div>
+        <h3 className="project-card-title">{project.title}</h3>
+        <p className="project-card-desc">{project.description}</p>
+        
+        <div className="project-card-stack">
+          {project.stack && project.stack.map((s) => (
+            <span key={s} className="card-stack-tag">{s}</span>
+          ))}
+        </div>
+
+        <div className="project-actions">
+          {project.github && (
+            <a href={project.github} target="_blank" rel="noreferrer" className="action-btn" title="GitHub Source">
+              ⌥ GitHub
+            </a>
+          )}
+          {project.live && (
+            <a href={project.live} target="_blank" rel="noreferrer" className="action-btn primary" title="View Live">
+              ↗ Live Demo
+            </a>
+          )}
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

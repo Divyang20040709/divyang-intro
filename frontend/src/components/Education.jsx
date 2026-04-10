@@ -1,5 +1,5 @@
 import React from "react";
-import { useReveal } from "../hooks/useReveal";
+import { motion } from "framer-motion";
 import "./Education.css";
 
 const eduData = [
@@ -11,35 +11,45 @@ const eduData = [
 ];
 
 export default function Education() {
-  const h = useReveal();
+  const revealProps = {
+    initial: { opacity: 0, y: 30 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.2 },
+    transition: { duration: 0.6 }
+  };
 
   return (
     <section id="education" className="section">
-      <div ref={h} className="section-header reveal">
+      <motion.div {...revealProps} className="section-header">
         <span className="section-num">04 /</span>
         <h2 className="section-title">Education</h2>
         <div className="section-line" />
-      </div>
+      </motion.div>
 
       <div className="edu-timeline">
         {eduData.map((e, i) => (
-          <EduItem key={i} data={e} delay={i * 120} />
+          <EduItem key={i} data={e} index={i} />
         ))}
       </div>
     </section>
   );
 }
 
-function EduItem({ data, delay }) {
-  const ref = useReveal();
+function EduItem({ data, index }) {
   return (
-    <div ref={ref} className="edu-item reveal" style={{ transitionDelay: `${delay}ms` }}>
+    <motion.div
+      className="edu-item"
+      initial={{ opacity: 0, x: -30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.5, delay: index * 0.15 }}
+    >
       <div className="edu-dot" />
       <div className="edu-year">{data.period}</div>
       <h3 className="edu-degree">{data.degree}</h3>
       <p className="edu-school">{data.school}</p>
       <p className="edu-detail">{data.detail}</p>
       <span className="edu-badge">{data.badge}</span>
-    </div>
+    </motion.div>
   );
 }

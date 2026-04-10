@@ -1,21 +1,17 @@
 import React, { useState } from "react";
-import { useReveal } from "../hooks/useReveal";
+import { motion, AnimatePresence } from "framer-motion";
+import { sendContact } from "../api";
 import "./Contact.css";
 
 const socialLinks = [
   { icon: "✉", label: "divyangsolanki2004@gmail.com",        href: "mailto:divyangsolanki2004@gmail.com" },
   { icon: "⌥", label: "github.com/Divyang20040709",  href: "https://github.com/Divyang20040709" },
   { icon: "⊞", label: "linkedin.com/in/DivyangSolanki", href: "https://www.linkedin.com/in/divyang-solanki-b5037a2a3/" },
-
 ];
 
 const INIT = { name: "", email: "", message: "" };
 
 export default function Contact() {
-  const h = useReveal();
-  const left = useReveal();
-  const right = useReveal();
-
   const [form, setForm] = useState(INIT);
   const [status, setStatus] = useState("idle"); // idle | sending | success | error
   const [errMsg, setErrMsg] = useState("");
@@ -28,33 +24,12 @@ export default function Contact() {
     setStatus("sending");
     setErrMsg("");
 
-    // Use relative path locally (Vite proxy handles it) or full URL in production
-    const base = import.meta.env.VITE_API_URL || "";
-    console.log("[Contact] Submitting to:", `${base}/api/contact`);
-
     try {
-      const res = await fetch(`${base}/api/contact`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          message: form.message,
-        }),
+      await sendContact({
+        name: form.name,
+        email: form.email,
+        message: form.message,
       });
-
-      const data = await res.json();
-      console.log("[Contact] Response:", data);
-
-      if (!res.ok) {
-        // Handle validation errors from express-validator
-        const msg = data.errors
-          ? data.errors.map((e) => e.msg).join(", ")
-          : data.error || "Submission failed. Please try again.";
-        throw new Error(msg);
-      }
 
       setStatus("success");
       setForm(INIT);
@@ -65,17 +40,30 @@ export default function Contact() {
     }
   };
 
+  const revealProps = {
+    initial: { opacity: 0, y: 30 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.2 },
+    transition: { duration: 0.6 }
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
+    exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3 } }
+  };
+
   return (
     <section id="contact" className="section" style={{ background: "var(--bg2)" }}>
-      <div ref={h} className="section-header reveal">
+      <motion.div {...revealProps} className="section-header">
         <span className="section-num">05 /</span>
         <h2 className="section-title">Contact</h2>
         <div className="section-line" />
-      </div>
+      </motion.div>
 
       <div className="contact-grid">
         {/* Left */}
-        <div ref={left} className="reveal">
+        <motion.div {...revealProps} transition={{ duration: 0.6, delay: 0.1 }}>
           <h3 className="contact-heading">
             Let's build something{" "}
             <span style={{ color: "var(--cyan)" }}>great</span> together.
@@ -98,72 +86,103 @@ export default function Contact() {
               </a>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Form */}
-        <div ref={right} className="reveal">
-          {status === "success" ? (
-            <div className="contact-success">
-              <div className="success-icon">✓</div>
-              <h4>Message sent!</h4>
-              <p>Thanks for reaching out. I'll get back to you soon.</p>
-              <button className="btn-ghost" style={{ marginTop: "1.5rem", fontSize: "0.75rem" }}
-                onClick={() => setStatus("idle")}>
-                Send another →
-              </button>
-            </div>
-          ) : (
-            <form className="contact-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label className="form-label">Name</label>
-                <input
-                  className="form-input"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  placeholder="Your name"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Email</label>
-                <input
-                  className="form-input"
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  placeholder="your@email.com"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Message</label>
-                <textarea
-                  className="form-textarea"
-                  name="message"
-                  value={form.message}
-                  onChange={handleChange}
-                  placeholder="Tell me about your project..."
-                  required
-                  minLength={10}
-                />
-              </div>
-
-              {status === "error" && (
-                <p className="form-error">⚠ {errMsg}</p>
-              )}
-
-              <button
-                type="submit"
-                className="btn-primary form-submit"
-                disabled={status === "sending"}
+        <motion.div {...revealProps} transition={{ duration: 0.6, delay: 0.2 }} className="contact-form-container">
+          <AnimatePresence mode="wait">
+            {status === "success" ? (
+              <motion.div 
+                key="success"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="contact-success"
               >
-                {status === "sending" ? "Sending..." : "Send Message →"}
-              </button>
-            </form>
-          )}
-        </div>
+                <div className="success-icon">✓</div>
+                <h4>Message sent!</h4>
+                <p>Thanks for reaching out. I'll get back to you soon.</p>
+                <button className="btn-ghost" style={{ marginTop: "1.5rem", fontSize: "0.75rem" }}
+                  onClick={() => setStatus("idle")}>
+                  Send another →
+                </button>
+              </motion.div>
+            ) : (
+              <motion.form 
+                key="form"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="contact-form" 
+                onSubmit={handleSubmit}
+              >
+                <div className="form-group">
+                  <label className="form-label">Name</label>
+                  <input
+                    className="form-input"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Your name"
+                    required
+                    disabled={status === "sending"}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Email</label>
+                  <input
+                    className="form-input"
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="your@email.com"
+                    required
+                    disabled={status === "sending"}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Message</label>
+                  <textarea
+                    className="form-textarea"
+                    name="message"
+                    value={form.message}
+                    onChange={handleChange}
+                    placeholder="Tell me about your project..."
+                    required
+                    minLength={10}
+                    disabled={status === "sending"}
+                  />
+                </div>
+
+                {status === "error" && (
+                  <motion.p 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="form-error"
+                  >
+                    ⚠ {errMsg}
+                  </motion.p>
+                )}
+
+                <button
+                  type="submit"
+                  className={`btn-primary form-submit ${status === "sending" ? "loading" : ""}`}
+                  disabled={status === "sending"}
+                >
+                  {status === "sending" ? (
+                    <>
+                      <span className="spinner"></span>
+                      Sending...
+                    </>
+                  ) : "Send Message →"}
+                </button>
+              </motion.form>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );

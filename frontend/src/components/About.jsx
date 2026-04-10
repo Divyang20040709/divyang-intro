@@ -1,5 +1,5 @@
 import React from "react";
-import { useReveal } from "../hooks/useReveal";
+import { motion } from "framer-motion";
 
 const terminalLines = [
   { prompt: true, cmd: "whoami --verbose" },
@@ -14,20 +14,23 @@ const terminalLines = [
 ];
 
 export default function About() {
-  const h = useReveal();
-  const t = useReveal();
-  const txt = useReveal();
+  const revealProps = {
+    initial: { opacity: 0, y: 30 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.2 },
+    transition: { duration: 0.6 }
+  };
 
   return (
     <section id="about" className="section" style={{ background: "var(--bg2)" }}>
-      <div ref={h} className="section-header reveal">
+      <motion.div {...revealProps} className="section-header">
         <span className="section-num">01 /</span>
         <h2 className="section-title">About Me</h2>
         <div className="section-line" />
-      </div>
+      </motion.div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6rem", alignItems: "center" }}>
-        <div ref={txt} className="reveal">
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6rem", alignItems: "center" }} className="about-grid">
+        <motion.div {...revealProps} transition={{ duration: 0.6, delay: 0.1 }}>
           <p style={{ fontSize: "0.9rem", lineHeight: 2, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
             Hey! I'm <strong style={{ color: "var(--cyan)" }}>Divyang T. Solanki</strong> — an Python and Ai/ML Engineer
             who loves turning complex problems into elegant, scalable solutions. I specialize in modern
@@ -40,11 +43,11 @@ export default function About() {
           </p>
           <div style={{ display: "flex", gap: "1rem" }}>
             <a href="#contact" className="btn-primary" style={{ fontSize: "0.75rem", padding: "0.7rem 1.5rem" }}>Hire Me →</a>
-            <a href="/resume.html" target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: "0.75rem", padding: "0.7rem 1.5rem" }}>Resume ↗</a>
+            <a href="/Divyang_Solanki_Resume.pdf" download="Divyang_Solanki_Resume.pdf" className="btn-ghost" style={{ fontSize: "0.75rem", padding: "0.7rem 1.5rem" }}>Download Resume 📄</a>
           </div>
-        </div>
+        </motion.div>
 
-        <div ref={t} className="reveal" style={{
+        <motion.div {...revealProps} transition={{ duration: 0.6, delay: 0.2 }} style={{
           background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: 2, overflow: "hidden"
         }}>
           {/* Terminal header */}
@@ -80,7 +83,7 @@ export default function About() {
               <span style={{ display: "inline-block", width: 8, height: 14, background: "var(--cyan)", animation: "blink 1s infinite", verticalAlign: "middle" }} />
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

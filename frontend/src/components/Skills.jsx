@@ -1,5 +1,5 @@
 import React from "react";
-import { useReveal } from "../hooks/useReveal";
+import { motion } from "framer-motion";
 import "./Skills.css";
 
 const skillData = [
@@ -12,34 +12,44 @@ const skillData = [
 ];
 
 export default function Skills() {
-  const h = useReveal();
+  const revealProps = {
+    initial: { opacity: 0, y: 30 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.2 },
+    transition: { duration: 0.6 }
+  };
 
   return (
     <section id="skills" className="section">
-      <div ref={h} className="section-header reveal">
+      <motion.div {...revealProps} className="section-header">
         <span className="section-num">02 /</span>
         <h2 className="section-title">Skills</h2>
         <div className="section-line" />
-      </div>
+      </motion.div>
 
       <div className="skills-grid">
         {skillData.map((s, i) => (
-          <SkillCard key={s.name} data={s} delay={i * 80} />
+          <SkillCard key={s.name} data={s} index={i} />
         ))}
       </div>
     </section>
   );
 }
 
-function SkillCard({ data, delay }) {
-  const ref = useReveal();
+function SkillCard({ data, index }) {
   return (
-    <div ref={ref} className="skill-card reveal" style={{ transitionDelay: `${delay}ms` }}>
+    <motion.div
+      className="skill-card"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+    >
       <div className="skill-icon">{data.icon}</div>
       <div className="skill-name">{data.name}</div>
       <div className="skill-tags">
         {data.tags.map((t) => <span key={t} className="skill-tag">{t}</span>)}
       </div>
-    </div>
+    </motion.div>
   );
 }

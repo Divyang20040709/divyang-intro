@@ -3,6 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const morgan = require("morgan");
+const { corsOptions, rawClientUrl } = require("./config/corsConfig");
+
 const contactRoutes = require("./routes/contact");
 const projectRoutes = require("./routes/projects");
 
@@ -10,35 +13,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV?.trim() || "development";
 
-// ─── CORS ────────────────────────────────────────────────────
-// Normalize CLIENT_URL: strip trailing slash to avoid mismatch
-const rawClientUrl = (process.env.CLIENT_URL || "http://localhost:5173").trim().replace(/\/$/, "");
-
-const allowedOrigins = [
-  rawClientUrl,
-  "http://localhost:5173",
-  "http://localhost:3000",
-];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    // Allow requests with no origin (curl, Postman, server-to-server)
-    if (!origin) return callback(null, true);
-    // Normalize incoming origin too (strip trailing slash)
-    const normalized = origin.replace(/\/$/, "");
-    if (allowedOrigins.includes(normalized)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS: origin '${origin}' not allowed`));
-    }
-  },
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-};
-
 // ─── Middleware ───────────────────────────────────────────────
 app.use(helmet());
+app.use(morgan(NODE_ENV === "production" ? "combined" : "dev"));
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); // Pre-flight for all routes
 app.use(express.json());
@@ -51,13 +28,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// ─── Root Route (Render health check) ────────────────────────
+// ─── Root Route ───────────────────────────────────────────────
 app.get("/", (req, res) => {
-  res.json({
-    message: "Backend is running",
-    environment: NODE_ENV,
-    timestamp: new Date().toISOString(),
-  });
+  res.send("Backend is running 🚀");
 });
 
 // ─── API Routes ───────────────────────────────────────────────

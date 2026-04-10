@@ -1,133 +1,91 @@
-# 🖥️ Portfolio — React + Node.js
+# Divyang Solanki | Python & AI/ML Engineer
 
-A dark & sleek developer portfolio with a React frontend and Express backend.
+A high-performance, professional portfolio showcasing intelligent systems, data-driven solutions, and clean architectural design.
 
----
-
-## Project Structure
-
-```
-portfolio/
-├── backend/          # Express API
-│   ├── routes/
-│   │   ├── contact.js    # POST /api/contact  (sends email)
-│   │   └── projects.js   # GET  /api/projects
-│   ├── server.js
-│   ├── .env.example
-│   └── package.json
-│
-└── frontend/         # React + Vite
-    ├── src/
-    │   ├── components/   # Navbar, Hero, About, Skills, Projects, Education, Contact, Footer, Cursor
-    │   ├── hooks/
-    │   │   └── useReveal.js  # Intersection observer scroll reveal
-    │   ├── App.jsx
-    │   ├── index.css
-    │   └── main.jsx
-    ├── index.html
-    ├── vite.config.js    # Proxies /api → localhost:5000
-    └── package.json
-```
+[Live Demo](https://your-portfolio-url.vercel.app/) • [Contact Me](#contact)
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Overview
 
-### 1. Backend
+This portfolio serves as a comprehensive showcase of my expertise in Python development and Artificial Intelligence. Built with a focus on **visual excellence**, **modern UX**, and **production-level code**, it demonstrates my ability to transform raw data into actionable insights and smart applications.
 
-```bash
-cd backend
-npm install
-
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your SMTP credentials
-
-npm run dev       # starts on http://localhost:5000
-```
-
-### 2. Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev       # starts on http://localhost:5173
-```
-
-> Vite proxies `/api/*` requests to `http://localhost:5000` automatically — no CORS issues in dev.
+### Key Features
+- **Modern UI/UX**: Built with React and Vanilla CSS for a sleek, high-performance experience.
+- **Micro-Animations**: Uses Framer Motion for smooth, professional transitions.
+- **Centralized API Layer**: Robust frontend-backend communication with dedicated error handling.
+- **Dark/Light Mode**: Fully persistent theme toggle for optimal accessibility.
+- **SEO Optimized**: Comprehensive metadata for search engine visibility and social sharing.
+- **Responsive Design**: Flawless experience across all device sizes.
 
 ---
 
-## 🔌 API Endpoints
+## 🛠️ Tech Stack
 
-| Method | Endpoint         | Description               |
-|--------|------------------|---------------------------|
-| GET    | /api/health      | Health check              |
-| GET    | /api/projects    | List all projects         |
-| GET    | /api/projects/:id| Single project            |
-| POST   | /api/contact     | Send contact email        |
+### Frontend
+- **React (Vite)**: Component-based UI development.
+- **Framer Motion**: Advanced animations and transitions.
+- **CSS3 Variables**: Dynamic design system and theming.
 
-### POST /api/contact — Body
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "message": "Hey, let's work together!"
-}
-```
+### Backend
+- **Node.js & Express**: High-performance API endpoints.
+- **Nodemailer**: Integrated contact form with SMTP support.
+- **Environment Management**: Secure configuration with `.env`.
 
 ---
 
-## ✏️ Customization
+## 📂 Project Highlights
 
-### Change your info
-Edit these files with your real data:
-- `frontend/src/components/Hero.jsx` — name, tagline, stats
-- `frontend/src/components/About.jsx` — bio, terminal widget
-- `frontend/src/components/Skills.jsx` — skill cards
-- `frontend/src/components/Education.jsx` — education items
-- `frontend/src/components/Contact.jsx` — social links
-- `backend/routes/projects.js` — projects array (or connect a real DB)
+### 01 / Smart Solution A
+An AI-driven platform that automates complex data workflows using Python and TensorFlow.
+- **Stack**: Python, TensorFlow, React, FastAPI
+- [Code](https://github.com/Divyang20040709) • [Demo](https://your-portfolio-url.vercel.app/)
 
-### Connect a real database
-Replace the in-memory `projects` array in `backend/routes/projects.js` with your preferred DB:
-- **PostgreSQL** → use `pg` or `prisma`
-- **MongoDB** → use `mongoose`
-- **Supabase** → use `@supabase/supabase-js`
-
-### Email setup (Nodemailer)
-In `.env`, set:
-```
-SMTP_HOST=smtp.gmail.com
-SMTP_USER=your@gmail.com
-SMTP_PASS=your_app_password   # Gmail: Settings → App Passwords
-CONTACT_EMAIL=your@gmail.com
-```
+### 02 / Intelligent System B
+A scalable backend system designed to process millions of requests with minimal latency.
+- **Stack**: Node.js, Express, Redis, Docker
+- [Code](https://github.com/Divyang20040709) • [Demo](https://your-portfolio-url.vercel.app/)
 
 ---
 
-## 🏗️ Build for Production
+## 💻 Local Setup
 
-```bash
-# Frontend
-cd frontend && npm run build    # outputs to frontend/dist/
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
 
-# Backend — serve frontend/dist as static files, or deploy separately
-# e.g. serve frontend on Vercel, backend on Railway/Render
-```
+### Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Divyang20040709/divyang-portfolio.git
+   cd divyang-portfolio
+   ```
+
+2. **Frontend Setup**
+   ```bash
+   cd frontend
+   npm install
+   cp .env.example .env # Update VITE_API_URL
+   npm run dev
+   ```
+
+3. **Backend Setup**
+   ```bash
+   cd ../backend
+   npm install
+   cp .env.example .env # Update SMTP credentials
+   npm run dev
+   ```
 
 ---
 
-## 🎨 Design Tokens (CSS Variables)
+## 📧 Contact
 
-| Variable    | Value      | Usage               |
-|-------------|------------|---------------------|
-| `--bg`      | `#07080d`  | Page background     |
-| `--bg2`     | `#0d0f17`  | Section alt bg      |
-| `--bg3`     | `#12151f`  | Card / input bg     |
-| `--cyan`    | `#00e5ff`  | Primary accent      |
-| `--green`   | `#00ff9d`  | Success / badges    |
-| `--text`    | `#c8d0e0`  | Body text           |
-| `--text-dim`| `#5a6275`  | Muted text          |
+- **Email**: [divyangsolanki2004@gmail.com](mailto:divyangsolanki2004@gmail.com)
+- **LinkedIn**: [Divyang Solanki](https://www.linkedin.com/in/divyang-solanki-b5037a2a3/)
+- **GitHub**: [@Divyang20040709](https://github.com/Divyang20040709)
 
-Change `--cyan` in `frontend/src/index.css` to theme the entire site instantly.
+---
+
+Developed with ❤️ by Divyang Solanki

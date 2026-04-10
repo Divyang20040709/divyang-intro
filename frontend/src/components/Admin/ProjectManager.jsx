@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Admin.css";
+import { API_URL } from "../../api";
 
-const API_URL = "https://divyang-intro.onrender.com";
+
 
 const ProjectManager = () => {
   const [projects, setProjects] = useState([]);

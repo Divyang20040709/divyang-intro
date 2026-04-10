@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Admin.css";
+import { API_URL } from "../../api";
 
 const categories = ["Frontend", "Backend", "Databases", "DevOps & Cloud", "Tools", "AI / ML"];
 
-const API_URL = "https://divyang-intro.onrender.com";
+
 
 const SkillManager = () => {
   const [skills, setSkills] = useState([]);

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Admin.css";
+import { API_URL } from "../../api";
 
-const API_URL = import.meta.env.VITE_API_URL;
+
 
 const AdminLogin = () => {
   const [username, setUsername] = useState("");

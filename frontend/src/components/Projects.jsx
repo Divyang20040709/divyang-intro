@@ -55,7 +55,7 @@ export default function Projects() {
       {!loading && !error && (
         <div className="projects-grid">
           {projects.map((p, i) => (
-            <ProjectCard key={p.id || i} project={p} index={i} />
+            <ProjectCard key={p._id || i} project={p} index={i} />
           ))}
         </div>
       )}
@@ -77,28 +77,24 @@ function ProjectCard({ project, index }) {
     >
       <div className="project-image-wrapper">
         <img src={imageSrc} alt={project.title} className="project-card-image" />
-        <div className="project-overlay">
-          <div className="project-links-overlay">
-            {/* The overlay now just serves as a visual hover state */}
-          </div>
-        </div>
+        <div className="project-num-tag">{String(index + 1).padStart(2, "0")}</div>
       </div>
 
       <div className="project-body">
-        <div className="project-num-tag">{String(index + 1).padStart(2, "0")}</div>
         <h3 className="project-card-title">{project.title}</h3>
-        <p className="project-card-desc">{project.description}</p>
         
         <div className="project-card-stack">
-          {project.stack && project.stack.map((s) => (
+          {(project.techStack || project.stack || []).map((s) => (
             <span key={s} className="card-stack-tag">{s}</span>
           ))}
         </div>
 
+        <p className="project-card-desc">{project.description}</p>
+        
         <div className="project-actions">
           {project.github && (
             <a href={project.github} target="_blank" rel="noreferrer" className="action-btn" title="GitHub Source">
-              ⌥ GitHub
+              ⌥ Source Code
             </a>
           )}
           {project.live && (

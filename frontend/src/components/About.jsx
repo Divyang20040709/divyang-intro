@@ -8,7 +8,8 @@ const terminalLines = [
   { key: "role", val: '"Python & Ai/ML Engineer"' },
   { key: "location", val: '"Ahmedabad, Gujarat, India"' },
   { key: "experience", val: '"Fresher"' },
-  { key: "focus", val: '["Python", "Ai/ML", "AWS"]' },
+  { key: "focus", val: '["AI Engineering", "Python", "Cloud"]' },
+  { key: "aspiration", val: '"AI Engineer @ Global Tech"' },
   { key: "openToWork", val: "true", green: true },
   { out: "}" },
 ];
@@ -31,15 +32,14 @@ export default function About() {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6rem", alignItems: "center" }} className="about-grid">
         <motion.div {...revealProps} transition={{ duration: 0.6, delay: 0.1 }}>
-          <p style={{ fontSize: "0.9rem", lineHeight: 2, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
-            Hey! I'm <strong style={{ color: "var(--cyan)" }}>Divyang T. Solanki</strong> — an Python and Ai/ML Engineer
-            who loves turning complex problems into elegant, scalable solutions. I specialize in modern
-            Python and AI/ML ecosystems and cloud-native architecture.
+          <p style={{ fontSize: "1rem", lineHeight: 1.8, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
+            Hey! I'm <strong style={{ color: "var(--cyan)" }}>Divyang T. Solanki</strong> — a IT student with a deep passion for building intelligent systems that solve real-world problems.
           </p>
-          <p style={{ fontSize: "0.9rem", lineHeight: 2, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
-            My approach is simple: <strong style={{ color: "var(--cyan)" }}>write code that works,
-            then make it beautiful</strong>. I care deeply about developer experience, performance,
-            and shipping products people actually enjoy using.
+          <p style={{ fontSize: "1rem", lineHeight: 1.8, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
+            My journey started with a curiosity for how web applications work, leading me through the world of full-stack development. However, I quickly found my true calling at the intersection of data and engineering. I’ve spent the last couple of years building everything from scalable React apps to intelligent AI/ML models.
+          </p>
+          <p style={{ fontSize: "1rem", lineHeight: 1.8, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
+            Currently, I'm focused on mastering the art of building production-grade AI solutions. My goal is to become an <strong style={{ color: "var(--cyan)" }}>AI Engineer</strong> who crafts technology that is both sophisticated and accessible.
           </p>
           <div style={{ display: "flex", gap: "1rem" }}>
             <a href="#contact" className="btn-primary" style={{ fontSize: "0.75rem", padding: "0.7rem 1.5rem" }}>Hire Me →</a>

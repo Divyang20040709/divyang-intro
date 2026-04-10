@@ -1,33 +1,50 @@
 .projects-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2.5rem;
 }
 
 .project-card {
   position: relative;
   display: flex;
-  background: var(--bg3);
+  flex-direction: column;
+  background: var(--bg2);
   border: 1px solid var(--border);
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  border-radius: var(--radius);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   overflow: hidden;
-  gap: 1rem;
+  height: 100%;
 }
 
 .project-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(0, 242, 255, 0.4);
-  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 229, 255, 0.1);
+  transform: translateY(-12px);
+  border-color: var(--cyan);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6), 0 0 30px rgba(var(--cyan-rgb), 0.1);
 }
 
 /* Image Section */
 .project-image-wrapper {
   position: relative;
-  width: 280px;
-  min-width: 280px;
-  height: 100%;
+  width: 100%;
+  height: 220px;
   overflow: hidden;
-  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.project-num-tag {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--cyan);
+  background: rgba(var(--bg-rgb), 0.8);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--border-active);
+  z-index: 2;
 }
 
 .project-card-image {
@@ -155,10 +172,11 @@
 
 .project-card-title {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.4rem;
+  font-weight: 800;
   margin-bottom: 1rem;
   color: var(--text);
+  letter-spacing: -0.01em;
 }
 
 .project-card-desc {
@@ -210,15 +228,12 @@
   to { transform: rotate(360deg); }
 }
 
-@media (max-width: 900px) {
-  .project-card {
-    flex-direction: column;
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
   .project-image-wrapper {
-    width: 100%;
-    min-width: 100%;
-    height: 200px;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
+    height: 180px;
   }
 }

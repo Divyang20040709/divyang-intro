@@ -4,9 +4,9 @@ import { sendContact } from "../api";
 import "./Contact.css";
 
 const socialLinks = [
-  { icon: "✉", label: "divyangsolanki2004@gmail.com",        href: "mailto:divyangsolanki2004@gmail.com" },
-  { icon: "⌥", label: "github.com/Divyang20040709",  href: "https://github.com/Divyang20040709" },
-  { icon: "⊞", label: "linkedin.com/in/DivyangSolanki", href: "https://www.linkedin.com/in/divyang-solanki-b5037a2a3/" },
+  { icon: "✉", label: "Email", val: "divyangsolanki2004@gmail.com", href: "mailto:divyangsolanki2004@gmail.com" },
+  { icon: "⌥", label: "GitHub", val: "github.com/Divyang20040709", href: "https://github.com/Divyang20040709" },
+  { icon: "⊞", label: "LinkedIn", val: "linkedin.com/in/Divyang-Solanki", href: "https://www.linkedin.com/in/divyang-solanki-b5037a2a3/" },
 ];
 
 const INIT = { name: "", email: "", message: "" };
@@ -77,12 +77,15 @@ export default function Contact() {
               <a 
                 key={l.label} 
                 href={l.href} 
-                className="contact-link" 
+                className="contact-link-card" 
                 target="_blank" 
                 rel="noopener noreferrer"
               >
-                <span className="contact-link-icon">{l.icon}</span>
-                {l.label}
+                <div className="contact-link-icon-box">{l.icon}</div>
+                <div className="contact-link-info">
+                  <span className="contact-link-label">{l.label}</span>
+                  <span className="contact-link-val">{l.val}</span>
+                </div>
               </a>
             ))}
           </div>

@@ -43,27 +43,30 @@ export default function Hero() {
         </motion.div> */}
         
         <motion.h1 variants={itemVariants} className="hero-name">
-          Divyang <br />
-          <span className="accent">Solanki.</span>
+          Divyang <span className="accent">Solanki</span>
         </motion.h1>
 
         <motion.div variants={itemVariants} className="hero-role-title">
-          Python & Ai/ML Engineer
+          IT Student & Aspiring AI Engineer
         </motion.div>
         
         <motion.p variants={itemVariants} className="hero-desc">
-          I build intelligent, data-driven applications using Python and AI/ML—transforming raw data into smart solutions. Obsessed with clean code, efficient models, and real-world impact.
+          Building scalable full-stack applications with Ai intergrated and intelligent data-driven solutions with Python, and AI/ML.
         </motion.p>
         
         <motion.div variants={itemVariants} className="hero-btns">
-          <a href="#projects" className="btn-primary">
-            <span className="btn-arrow">→</span>
-            View Projects
+          <a href="/Divyang_Solanki_Resume.pdf" download className="btn-primary">
+            <span className="btn-icon">📄</span>
+            Resume
           </a>
-          <a href="#contact" className="btn-ghost">
-            <span className="btn-arrow">↗</span>
-            Let's Talk
-          </a>
+          <div className="hero-socials">
+            <a href="https://github.com/Divyang20040709" target="_blank" rel="noreferrer" className="social-btn" title="GitHub">
+              <span className="btn-icon">⌥</span> GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/divyang-solanki-b5037a2a3/" target="_blank" rel="noreferrer" className="social-btn" title="LinkedIn">
+              <span className="btn-icon">⊞</span> LinkedIn
+            </a>
+          </div>
         </motion.div>
 
         <div className="hero-scroll">

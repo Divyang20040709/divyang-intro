@@ -1,11 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const { getAllProjects, getProjectById } = require("../controllers/projectController");
+const { 
+  getAllProjects, 
+  getProjectById, 
+  createProject, 
+  updateProject, 
+  deleteProject 
+} = require("../controllers/projectController");
+const { protect } = require("../middleware/auth");
 
-// GET /api/projects
+// Public routes
 router.get("/", getAllProjects);
-
-// GET /api/projects/:id
 router.get("/:id", getProjectById);
+
+// Protected routes (Admin only)
+router.post("/", protect, createProject);
+router.put("/:id", protect, updateProject);
+router.delete("/:id", protect, deleteProject);
 
 module.exports = router;

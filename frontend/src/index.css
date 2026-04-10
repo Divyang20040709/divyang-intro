@@ -20,9 +20,12 @@
   --glow-strong: 0 0 40px rgba(0, 242, 255, 0.3);
   
   --font-display: "Syne", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
   
   --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  --radius: 12px;
+  --radius-sm: 8px;
 }
 
 body.light-mode {
@@ -58,9 +61,9 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   overflow-x: hidden;
-  line-height: 1.6;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -132,11 +135,12 @@ h1, h2, h3, h4 {
 
 /* Button System */
 .btn-primary {
-  padding: 1rem 2.2rem;
+  padding: 0.9rem 2rem;
   background: var(--cyan);
   color: var(--text-dark);
   font-size: 0.85rem;
   font-weight: 700;
+  border-radius: var(--radius-sm);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   display: inline-flex;
@@ -152,9 +156,10 @@ h1, h2, h3, h4 {
 }
 
 .btn-ghost {
-  padding: 1rem 2.2rem;
+  padding: 0.9rem 2rem;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-active);
+  border-radius: var(--radius-sm);
   color: var(--text);
   font-size: 0.85rem;
   font-weight: 600;

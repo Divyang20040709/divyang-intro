@@ -1,80 +1,24 @@
-// In-memory data
-const projects = [
-  {
-    id: 1,
-    num: "01",
-    title: "Zoomify",
-    description: "I built a real-time Zoom Clone application that enables seamless video conferencing with features like live video/audio streaming, meeting rooms, and user authentication. The frontend is developed using React.js for a dynamic and responsive UI, while Node.js handles the backend logic and real-time communication. MongoDB is used to manage user data and session information efficiently. This project demonstrates my ability to build scalable, full-stack, real-time applications.",
-    stack: ["Node.js", "React.js", "MongoDB"],
-    github: "https://github.com/Divyang20040709/Zoomify__",
-    featured: true,
-  },
-  {
-    id: 2,
-    num: "02",
-    title: "Ecommerce-streamlit",
-    description: "Built an E-commerce web app using Streamlit with API integration to display real-time product data. Focused on simplicity, responsiveness, and smooth user experience.",
-    stack: ["Python", "API", "Streamlit"],
-    github: "https://github.com/Divyang20040709/ecommerce_fake",
-    live: "https://ecommercefake-my.streamlit.app/",
-    featured: true,
-  },
-  {
-    id: 3,
-    num: "03",
-    title: "News App",
-    description: "Built a News App using Streamlit with API integration to display real-time news articles by category. Focused on simplicity and user-friendly design. You can also see the full article on other tab by pressing button Read full article.",
-    stack: ["Python", "API", "Streamlit"],
-    github: "https://github.com/Divyang20040709/news_app",
-    live: "https://mynewsapp.streamlit.app/",
-    featured: true,
-  },
-  {
-    id: 4,
-    num: "04",
-    title: "Currency Converter",
-    description: "I developed a Currency Converter application using Streamlit that integrates with external APIs to provide real-time exchange rates. The app allows users to convert between multiple currencies instantly with an intuitive and user-friendly interface. This project demonstrates my ability to work with APIs, handle dynamic data, and build practical Python-based web applications.",
-    stack: ["Python", "API", "Streamlit"],
-    github: "https://github.com/Divyang20040709/currency_converter-",
-    live: "https://my1stliveapp.streamlit.app/",
-    featured: false,
-  },
-  {
-    id: 5,
-    num: "05",
-    title: "Weather App",
-    description: "I developed a Weather Application using Streamlit that fetches real-time weather data through API integration. Users can enter any city or country name to get accurate weather details, including temperature, conditions, and other key metrics. This project demonstrates my ability to work with APIs, handle user input dynamically, and build practical Python web applications.",
-    stack: ["Python", "API", "Streamlit"],
-    github: "https://github.com/Divyang20040709/Weather_app",
-    live: "https://weatherapp-mine.streamlit.app/",
-    featured: false,
-  },   
-  {
-    id: 6,
-    num: "06",
-    title: "Expense Tracker",
-    description: "I built a simple expense tracker web app using Streamlit that helps users manage their daily income and expenses. It allows adding and categorizing expenses, and shows useful insights like total spending, savings, and trends. I also used Pandas and Matplotlib to analyze data and create visual charts. Users can even download their expense data and customize categories.",
-    stack: ["Python", "Matplotlib","Pandas", "Streamlit"],
-    github: "https://github.com/Divyang20040709/expense_tracker",
-    live: "https://expensetracker-dts.streamlit.app/",
-    featured: false,
-  },
-];
+const Project = require("../models/Project");
 
-exports.getAllProjects = (req, res) => {
+// @route   GET /api/projects
+// @desc    Get all projects
+exports.getAllProjects = async (req, res) => {
   try {
     const { featured } = req.query;
-    const data = featured === "true" ? projects.filter((p) => p.featured) : projects;
-    res.status(200).json({ projects: data });
+    const query = featured === "true" ? { featured: true } : {};
+    const projects = await Project.find(query).sort({ createdAt: -1 });
+    res.status(200).json({ projects });
   } catch (err) {
     console.error("Error fetching projects:", err.message);
     res.status(500).json({ error: "Failed to fetch projects." });
   }
 };
 
-exports.getProjectById = (req, res) => {
+// @route   GET /api/projects/:id
+// @desc    Get project by ID
+exports.getProjectById = async (req, res) => {
   try {
-    const project = projects.find((p) => p.id === parseInt(req.params.id));
+    const project = await Project.findById(req.params.id);
     if (!project) return res.status(404).json({ error: "Project not found" });
     res.status(200).json(project);
   } catch (err) {
@@ -82,3 +26,43 @@ exports.getProjectById = (req, res) => {
     res.status(500).json({ error: "Failed to fetch project." });
   }
 };
+
+// @route   POST /api/projects
+// @desc    Create a new project
+// @access  Private/Admin
+exports.createProject = async (req, res) => {
+  try {
+    const project = new Project(req.body);
+    const savedProject = await project.save();
+    res.status(201).json(savedProject);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// @route   PUT /api/projects/:id
+// @desc    Update a project
+// @access  Private/Admin
+exports.updateProject = async (req, res) => {
+  try {
+    const project = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!project) return res.status(404).json({ error: "Project not found" });
+    res.status(200).json(project);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// @route   DELETE /api/projects/:id
+// @desc    Delete a project
+// @access  Private/Admin
+exports.deleteProject = async (req, res) => {
+  try {
+    const project = await Project.findByIdAndDelete(req.params.id);
+    if (!project) return res.status(404).json({ error: "Project not found" });
+    res.status(200).json({ success: true, message: "Project deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+

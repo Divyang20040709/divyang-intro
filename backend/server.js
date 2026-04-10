@@ -5,9 +5,15 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
 const { corsOptions, rawClientUrl } = require("./config/corsConfig");
+const connectDB = require("./config/db");
 
 const contactRoutes = require("./routes/contact");
 const projectRoutes = require("./routes/projects");
+const skillRoutes = require("./routes/skills");
+const authRoutes = require("./routes/auth");
+
+// Connect to Database
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -34,8 +40,10 @@ app.get("/", (req, res) => {
 });
 
 // ─── API Routes ───────────────────────────────────────────────
+app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/projects", projectRoutes);
+app.use("/api/skills", skillRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", environment: NODE_ENV, timestamp: new Date().toISOString() });

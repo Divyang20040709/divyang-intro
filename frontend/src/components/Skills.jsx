@@ -1,23 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import "./Skills.css";
 
-const skillData = [
-  { icon: "⚛️", name: "Frontend", tags: ["React","HTML/CSS"] },
-  { icon: "🔧", name: "Backend",  tags: ["Node.js","Python","FastAPI","REST APIs"] },
-  { icon: "🗄️", name: "Databases",tags: ["MongoDB","Firebase"] },
-  { icon: "☁️", name: "DevOps & Cloud", tags: ["AWS","GitHub Actions"] },
-  { icon: "🛠️", name: "Tools",    tags: ["Git","VS Code","Postman","Anaconda"] },
-  { icon: "🤖", name: "AI / ML",  tags: ["Hugging Face"] },
-];
-
 export default function Skills() {
+  const [skillData, setSkillData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const res = await fetch("/api/skills");
+        const data = await res.json();
+        setSkillData(data.skills || []);
+      } catch (err) {
+        console.error("Failed to fetch skills:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSkills();
+  }, []);
+
   const revealProps = {
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, amount: 0.2 },
     transition: { duration: 0.6 }
   };
+
+  if (loading && skillData.length === 0) {
+    return null; // Or a skeleton
+  }
 
   return (
     <section id="skills" className="section">
@@ -29,7 +42,7 @@ export default function Skills() {
 
       <div className="skills-grid">
         {skillData.map((s, i) => (
-          <SkillCard key={s.name} data={s} index={i} />
+          <SkillCard key={s._id || i} data={s} index={i} />
         ))}
       </div>
     </section>

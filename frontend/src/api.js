@@ -1,10 +1,13 @@
-export const API_URL = import.meta.env.VITE_API_URL || "";
+export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 /**
  * Generic request helper to handle API calls and errors
  */
 const request = async (endpoint, options = {}) => {
-  const url = `${API_URL}${endpoint}`;
+  // Ensure endpoint starts with / for absolute pathing
+  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  const url = `${API_URL}${path}`;
+
   const headers = {
     "Content-Type": "application/json",
     ...options.headers,
@@ -12,8 +15,18 @@ const request = async (endpoint, options = {}) => {
 
   try {
     const response = await fetch(url, { ...options, headers });
+
+    // 1. Check if the response is JSON before parsing
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const text = await response.text();
+      console.error(`[API Error] Received non-JSON response (${contentType || "text/html"}). Body:`, text.substring(0, 200));
+      throw new Error(`Invalid response version: Expected JSON but received ${contentType || "HTML"}. Please check if the API URL is correct.`);
+    }
+
     const data = await response.json();
 
+    // 2. Handle HTTP errors
     if (!response.ok) {
       const errorMsg = data.errors
         ? data.errors.map((e) => e.msg).join(", ")
@@ -44,3 +57,4 @@ export const getSkills = async () => {
   const data = await request("/api/skills");
   return data.skills || [];
 };
+

@@ -15,22 +15,35 @@ connectDB();
 
 const app = express();
 
-// 1. GLOBAL HEADER MIDDLEWARE (TOP PRIORITY)
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+// 2. MIDDLEWARE CONFIGURATION
+const allowedOrigins = [
+  "https://divyang-intro.vercel.app",
+  "http://localhost:5173", // Vite default dev port
+  "http://localhost:3000",
+];
 
-  // Handle preflight requests immediately
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const isAllowed = allowedOrigins.includes(origin) || 
+                     origin.match(/^https:\/\/divyang-intro-.*\.vercel\.app$/); // Vercel previews
 
-  next();
-});
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      console.warn(`[CORS Blocked] Origin: ${origin}`);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
+  allowedHeaders: "Content-Type,Authorization",
+  credentials: true,
+};
 
-// 2. MIDDLEWARE ORDER (VERY IMPORTANT)
-app.use(cors());
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(helmet({
   crossOriginResourcePolicy: false,

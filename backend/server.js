@@ -4,14 +4,16 @@ const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
-const connectDB = require("./config/db");
+const mongoose = require("mongoose");
 
 const contactRoutes = require("./routes/contact");
 const projectRoutes = require("./routes/projects");
 const skillRoutes = require("./routes/skills");
 const authRoutes = require("./routes/auth");
 
-connectDB();
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
 const app = express();
 

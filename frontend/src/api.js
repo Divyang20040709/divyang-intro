@@ -1,12 +1,13 @@
-export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+export const API_URL = import.meta.env.VITE_API_URL || "https://divyang-intro.onrender.com";
 
 /**
  * Generic request helper to handle API calls and errors
  */
 const request = async (endpoint, options = {}) => {
   // Ensure endpoint starts with / for absolute pathing
-  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-  const url = `${API_URL}${path}`;
+  const baseUrl = API_URL.replace(/\/$/, "");
+  const cleanEndpoint = endpoint.replace(/^\//, "");
+  const url = `${baseUrl}/${cleanEndpoint}`;
 
   const headers = {
     "Content-Type": "application/json",

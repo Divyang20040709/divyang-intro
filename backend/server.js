@@ -10,6 +10,7 @@ const contactRoutes = require("./routes/contact");
 const projectRoutes = require("./routes/projects");
 const skillRoutes = require("./routes/skills");
 const authRoutes = require("./routes/auth");
+const { corsOptions } = require("./config/corsConfig");
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
@@ -18,32 +19,6 @@ mongoose.connect(process.env.MONGO_URI)
 const app = express();
 
 // 2. MIDDLEWARE CONFIGURATION
-const allowedOrigins = [
-  "https://divyang-intro.vercel.app",
-  "http://localhost:5173", // Vite default dev port
-  "http://localhost:3000",
-];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    const isAllowed = allowedOrigins.includes(origin) || 
-                     origin.match(/^https:\/\/divyang-intro-.*\.vercel\.app$/); // Vercel previews
-
-    if (isAllowed) {
-      callback(null, true);
-    } else {
-      console.warn(`[CORS Blocked] Origin: ${origin}`);
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
-  allowedHeaders: "Content-Type,Authorization",
-  credentials: true,
-};
-
 app.use(cors(corsOptions));
 
 app.use(express.json());

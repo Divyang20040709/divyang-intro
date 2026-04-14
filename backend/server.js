@@ -6,7 +6,7 @@ const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 
-const contactRoutes = require("./routes/contact");
+// const contactRoutes = require("./routes/contact"); // Removed for Web3Forms migration
 const projectRoutes = require("./routes/projects");
 const skillRoutes = require("./routes/skills");
 const authRoutes = require("./routes/auth");
@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
-app.use("/api/contact", contactRoutes);
+// app.use("/api/contact", contactRoutes); // Removed for Web3Forms migration
 app.use("/api/projects", projectRoutes);
 app.use("/api/skills", skillRoutes);
 

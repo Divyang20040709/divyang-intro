@@ -47,11 +47,11 @@ export default function Hero() {
         </motion.h1>
 
         <motion.div variants={itemVariants} className="hero-role-title">
-          IT Student & Aspiring AI Engineer
+          Aspiring AI/ML & Cloud Engineer
         </motion.div>
         
         <motion.p variants={itemVariants} className="hero-desc">
-          Building scalable full-stack applications with Ai intergrated and intelligent data-driven solutions with Python, and AI/ML.
+          Building intelligent, scalable solutions by combining AI/ML fundamentals with cloud technologies like AWS.
         </motion.p>
         
         <motion.div variants={itemVariants} className="hero-btns">

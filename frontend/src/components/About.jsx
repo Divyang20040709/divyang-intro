@@ -1,15 +1,16 @@
 import React from "react";
 import { motion } from "framer-motion";
+import "./About.css";
 
 const terminalLines = [
   { prompt: true, cmd: "whoami --verbose" },
   { out: "{" },
   { key: "name", val: '"Divyang Solanki"' },
-  { key: "role", val: '"Python & Ai/ML Engineer"' },
+  { key: "role", val: '"Aspiring AI/ML Engineer"' },
   { key: "location", val: '"Ahmedabad, Gujarat, India"' },
   { key: "experience", val: '"Fresher"' },
-  { key: "focus", val: '["AI Engineering", "Python", "Cloud"]' },
-  { key: "aspiration", val: '"AI Engineer @ Global Tech"' },
+  { key: "focus", val: '["AI/ML", "Cloud (AWS)", "Python", "Data Engineering"]' },
+  { key: "aspiration", val: '"AI/ML Engineer @ Tech Innovation"' },
   { key: "openToWork", val: "true", green: true },
   { out: "}" },
 ];
@@ -30,16 +31,25 @@ export default function About() {
         <div className="section-line" />
       </motion.div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6rem", alignItems: "center" }} className="about-grid">
+      <div className="about-grid">
         <motion.div {...revealProps} transition={{ duration: 0.6, delay: 0.1 }}>
           <p style={{ fontSize: "1rem", lineHeight: 1.8, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
-            Hey! I'm <strong style={{ color: "var(--cyan)" }}>Divyang T. Solanki</strong> — a IT student with a deep passion for building intelligent systems that solve real-world problems.
+            Hey! I'm <strong style={{ color: "var(--cyan)" }}>Divyang T. Solanki</strong> — an IT student with a strong interest in AI and how it can be applied to solve real-world problems.
           </p>
           <p style={{ fontSize: "1rem", lineHeight: 1.8, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
-            My journey started with a curiosity for how web applications work, leading me through the world of full-stack development. However, I quickly found my true calling at the intersection of data and engineering. I’ve spent the last couple of years building everything from scalable React apps to intelligent AI/ML models.
+            I initially got into tech through curiosity about how digital products work, which gave me a solid foundation in development and how real systems are built.
           </p>
           <p style={{ fontSize: "1rem", lineHeight: 1.8, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
-            Currently, I'm focused on mastering the art of building production-grade AI solutions. My goal is to become an <strong style={{ color: "var(--cyan)" }}>AI Engineer</strong> who crafts technology that is both sophisticated and accessible.
+            Over time, I became more interested in the intelligence behind these systems — how machines can learn from data, make decisions, and automate tasks. That’s what pushed me toward AI/ML.
+          </p>
+          <p style={{ fontSize: "1rem", lineHeight: 1.8, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
+            Right now, I’m focused on learning AI/ML fundamentals and exploring how to turn ideas into practical solutions. Alongside that, I’m also diving into cloud technologies like Amazon Web Services to understand how real-world applications are deployed and scaled.
+          </p>
+          <p style={{ fontSize: "1rem", lineHeight: 1.8, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
+            I also use AI tools in my workflow to experiment, learn faster, and explore different approaches while building things.
+          </p>
+          <p style={{ fontSize: "1rem", lineHeight: 1.8, color: "var(--text-dim)", marginBottom: "1.5rem" }}>
+            My goal is to become an <strong style={{ color: "var(--cyan)" }}>AI/ML engineer</strong> who can build not just models, but complete, real-world systems that are scalable, efficient, and actually useful.
           </p>
           <div style={{ display: "flex", gap: "1rem" }}>
             <a href="#contact" className="btn-primary" style={{ fontSize: "0.75rem", padding: "0.7rem 1.5rem" }}>Hire Me →</a>

@@ -1,0 +1,25 @@
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+@media (max-width: 1100px) {
+  .about-grid {
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 960px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-grid {
+    gap: 2.5rem;
+  }
+}

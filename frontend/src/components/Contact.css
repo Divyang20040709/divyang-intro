@@ -184,9 +184,40 @@
   color: var(--text-dim);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .contact-grid {
     grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  .contact-heading {
+    text-align: center;
+  }
+  .contact-subtext {
+    text-align: center;
+    margin-inline: auto;
+  }
+  .contact-links {
+    max-width: 500px;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-grid {
     gap: 3rem;
+  }
+  .contact-heading {
+    font-size: 1.6rem;
+  }
+  .contact-link-card {
+    padding: 1rem;
+  }
+  .contact-link-icon-box {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  .contact-link-val {
+    font-size: 0.8rem;
   }
 }

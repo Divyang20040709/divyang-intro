@@ -69,3 +69,31 @@
   color: var(--green);
   border: 1px solid rgba(0, 255, 157, 0.25);
 }
+
+@media (max-width: 768px) {
+  .edu-timeline {
+    padding-left: 1.5rem;
+  }
+  .edu-item {
+    padding-left: 2rem;
+    padding-bottom: 2.5rem;
+  }
+  .edu-degree {
+    font-size: 1.15rem;
+  }
+  .edu-school {
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .edu-timeline {
+    padding-left: 1rem;
+  }
+  .edu-item {
+    padding-left: 1.5rem;
+  }
+  .edu-detail {
+    font-size: 0.75rem;
+  }
+}

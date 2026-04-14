@@ -42,13 +42,6 @@ const request = async (endpoint, options = {}) => {
   }
 };
 
-export const sendContact = (data) => {
-  return request("/api/contact", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
-};
-
 export const getProjects = async () => {
   const data = await request("/api/projects");
   return data.projects || [];

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { sendContact } from "../api";
+// import { sendContact } from "../api"; // Removed for Web3Forms migration
 import "./Contact.css";
 
 const socialLinks = [
@@ -25,17 +25,31 @@ export default function Contact() {
     setErrMsg("");
 
     try {
-      await sendContact({
-        name: form.name,
-        email: form.email,
-        message: form.message,
+      const formData = new FormData();
+      formData.append("access_key", "0e9dabf2-2e3e-4b15-aa63-77950dfd5538");
+      formData.append("name", form.name);
+      formData.append("email", form.email);
+      formData.append("message", form.message);
+      formData.append("subject", "New Portfolio Message 🚀");
+      formData.append("from_name", "Portfolio Contact");
+      formData.append("replyto", form.email);
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
       });
 
-      setStatus("success");
-      setForm(INIT);
+      const resData = await response.json();
+
+      if (resData.success) {
+        setStatus("success");
+        setForm(INIT);
+      } else {
+        throw new Error(resData.message || "Something went wrong. Please try again.");
+      }
     } catch (err) {
       console.error("[Contact] Error:", err.message);
-      setErrMsg(err.message);
+      setErrMsg(err.message || "Failed to send message. Please check your connection.");
       setStatus("error");
     }
   };

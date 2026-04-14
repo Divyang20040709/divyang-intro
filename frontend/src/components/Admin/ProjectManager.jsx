@@ -156,7 +156,13 @@ const ProjectManager = () => {
       <div className="admin-grid">
         {projects.map((p) => (
           <div key={p._id} className="admin-item-card">
-            <h4>{p.title}</h4>
+            <div className="admin-item-info">
+              <h4>{p.title}</h4>
+              <div className="admin-item-status">
+                {p.githubLink ? <span className="status-tag success">GitHub ✓</span> : <span className="status-tag dim">No GitHub</span>}
+                {p.liveLink ? <span className="status-tag success">Live ✓</span> : <span className="status-tag dim">No Live</span>}
+              </div>
+            </div>
             <div className="admin-item-actions">
               <button className="admin-btn-edit" onClick={() => handleEdit(p)}>Edit</button>
               <button className="admin-btn-delete" onClick={() => handleDelete(p._id)}>Delete</button>

@@ -71,7 +71,7 @@ export default function Hero() {
 
         <div className="hero-scroll">
           <div className="hero-stat-main">
-            <span className="stat-num">06</span>
+            <span className="stat-num">09</span>
             <span className="stat-label">PROJECTS</span>
           </div>
         </div>
